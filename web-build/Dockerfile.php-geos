@@ -1,14 +1,21 @@
+#ddev-generated
 # Build and install the GEOS PHP extension.
 # See https://git.osgeo.org/gitea/geos/php-geos
-RUN apt-get update && apt-get install -y php8.1-dev libgeos-dev \
-  && git clone https://github.com/libgeos/php-geos \
-  && ( \
-    cd php-geos \
+RUN set -eux ;\
+  apt-get update ;\
+  apt-get install -y php${DDEV_PHP_VERSION}-dev libgeos-dev ;\
+  # Use github mirror for cloning.
+  git clone https://github.com/libgeos/php-geos ;\
+  # Build the extension.
+  ( \
+    cd php-geos ;\
     # Checkout latest commit with PHP 8 support.
-    && git checkout e77d5a16abbf89a59d947d1fe49381a944762c9d \
-    && ./autogen.sh \
-    && ./configure \
-    && make \
-    && make install \
-  ) \
-  && rm -r php-geos
+    git checkout e77d5a16abbf89a59d947d1fe49381a944762c9d ;\
+    ./autogen.sh ;\
+    ./configure ;\
+    make ;\
+    make install ;\
+  ) ;\
+  # Cleanup after build.
+  rm -r php-geos ;\
+  apt-get purge -y php${DDEV_PHP_VERSION}-dev

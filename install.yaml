@@ -1,14 +1,5 @@
 name: php-geos
 
-pre_install_actions:
-  - |
-    #ddev-nodisplay
-    #ddev-description:Check php version
-    if [ ${DDEV_PHP_VERSION} != "8.1" ]; then
-      echo "Currently this add-on only supports PHP 8.1.";
-      exit 1;
-    fi
-
 project_files:
 - web-build/Dockerfile.php-geos
 - php/geos.ini
