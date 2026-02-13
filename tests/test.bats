@@ -40,6 +40,9 @@ setup() {
 
 health_checks() {
   # Verify php geos extension is installed
+  run ddev exec echo "<?php phpinfo();" > web/index.php
+  run curl -sf https://${PROJNAME}.ddev.site
+  assert_output --partial "GEOS - Geometry Engine Open Source"
   run ddev php -m
   assert_success
   assert_output --partial "geos"
