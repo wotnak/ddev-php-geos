@@ -39,9 +39,10 @@ setup() {
 }
 
 health_checks() {
+  # Verify php geos extension is installed
   run ddev php -m
   assert_success
-  assert_output --partial "geos
+  assert_output --partial "geos"
 }
 
 teardown() {
