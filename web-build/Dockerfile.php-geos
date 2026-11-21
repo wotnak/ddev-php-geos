@@ -2,8 +2,10 @@
 # Build and install the GEOS PHP extension.
 # See https://git.osgeo.org/gitea/geos/php-geos
 RUN set -eux ;\
+  php_dev_package="php${DDEV_PHP_VERSION}-dev" ;\
+  php_dev_status="$(dpkg-query -W -f='${db:Status-Status}' "$php_dev_package" 2>/dev/null || true)" ;\
   apt-get update ;\
-  apt-get install -y php${DDEV_PHP_VERSION}-dev libgeos-dev ;\
+  apt-get install -y "$php_dev_package" libgeos-dev make ;\
   git clone https://github.com/libgeos/php-geos.git ;\
   # Build the extension.
   ( \
@@ -16,4 +18,6 @@ RUN set -eux ;\
   ) ;\
   # Cleanup after build.
   rm -r php-geos ;\
-  apt-get purge -y php${DDEV_PHP_VERSION}-dev
+  if [ "$php_dev_status" != installed ]; then \
+    apt-get purge -y "$php_dev_package" ;\
+  fi
