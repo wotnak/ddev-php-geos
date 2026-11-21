@@ -47,7 +47,7 @@ health_checks() {
   assert_output --partial "GEOS - Geometry Engine Open Source"
   run ddev php -m
   assert_success
-  assert_output --partial "geos"
+  assert_line "geos"
 }
 
 teardown() {
