@@ -4,14 +4,11 @@
 RUN set -eux ;\
   apt-get update ;\
   apt-get install -y php${DDEV_PHP_VERSION}-dev libgeos-dev ;\
-  # Use fork instead of the official github mirror to include support for PHP 8.5.
-  # https://github.com/libgeos/php-geos/pull/4
-  # https://gitea.osgeo.org/geos/php-geos/issues/35
-  git clone https://github.com/ghsgabriel/php-geos ;\
+  git clone https://github.com/libgeos/php-geos.git ;\
   # Build the extension.
   ( \
     cd php-geos ;\
-    git checkout 1c312538ad6194a8b24cec8ebaf71d78bfbe7f50 ;\
+    git checkout 1a1c6a95697359892886a2050570007754ce575e ;\
     ./autogen.sh ;\
     ./configure ;\
     make ;\
