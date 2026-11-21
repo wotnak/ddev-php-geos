@@ -32,7 +32,9 @@ setup() {
   export DDEV_NO_INSTRUMENTATION=true
   ddev delete -Oy "${PROJNAME}" >/dev/null 2>&1 || true
   cd "${TESTDIR}"
-  run ddev config --project-name="${PROJNAME}" --project-tld=ddev.site --project-type=php
+  mkdir web
+  printf '%s\n' '<?php phpinfo();' > web/index.php
+  run ddev config --project-name="${PROJNAME}" --project-tld=ddev.site --project-type=php --docroot=web
   assert_success
   run ddev start -y
   assert_success
@@ -40,8 +42,8 @@ setup() {
 
 health_checks() {
   # Verify php geos extension is installed
-  run ddev exec echo "<?php phpinfo();" > web/index.php
-  run curl -sf https://${PROJNAME}.ddev.site
+  run curl -fsS "https://${PROJNAME}.ddev.site"
+  assert_success
   assert_output --partial "GEOS - Geometry Engine Open Source"
   run ddev php -m
   assert_success
