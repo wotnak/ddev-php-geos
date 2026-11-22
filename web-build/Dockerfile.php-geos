@@ -20,4 +20,5 @@ RUN set -eux ;\
   rm -r php-geos ;\
   if [ "$php_dev_status" != installed ]; then \
     apt-get purge -y "$php_dev_package" ;\
-  fi
+  fi ;\
+  rm -rf /var/lib/apt/lists/*
