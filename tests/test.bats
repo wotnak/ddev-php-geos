@@ -34,21 +34,20 @@ setup() {
   export DDEV_NO_INSTRUMENTATION=true
   cd "${TESTDIR}"
   mkdir web
-  printf '%s\n' '<?php phpinfo();' > web/index.php
+  cp "${DIR}/tests/testdata/geos.php" web/index.php
   run ddev config --project-name="${PROJNAME}" --project-tld=ddev.site --project-type=php --docroot=web
   assert_success
   run ddev start -y
   assert_success
 }
 
-health_checks() {
-  # Verify php geos extension is installed
+smoke_test() {
   run curl -fsS "https://${PROJNAME}.ddev.site"
   assert_success
-  assert_output --partial "GEOS - Geometry Engine Open Source"
-  run ddev php -m
+  assert_output "GEOS OK"
+  run ddev php web/index.php
   assert_success
-  assert_line "geos"
+  assert_output "GEOS OK"
 }
 
 teardown() {
@@ -75,7 +74,7 @@ teardown() {
   assert_success
   run ddev restart -y
   assert_success
-  health_checks
+  smoke_test
 }
 
 # bats test_tags=release
@@ -86,5 +85,5 @@ teardown() {
   assert_success
   run ddev restart -y
   assert_success
-  health_checks
+  smoke_test
 }
