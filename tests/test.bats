@@ -32,6 +32,7 @@ setup() {
   export TESTDIR PROJNAME
   export DDEV_NONINTERACTIVE=true
   export DDEV_NO_INSTRUMENTATION=true
+  export CI=true
   cd "${TESTDIR}"
   mkdir web
   cp "${DIR}/tests/testdata/geos.php" web/index.php
